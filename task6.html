@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Report</title>
+</head>
+<body>
+    <h2>Student Result Report</h2>
+    <script>
+        const students = [
+            { name: "Rahul", marks: 85 },
+            { name: "Priya", marks: 32 },
+            { name: "Amit", marks: 67 },
+            { name: "Sneha", marks: 90 },
+            { name: "Kiran", marks: 28 }
+        ];
+
+        function studentReport(students) {
+
+            // Add 5 grace marks
+            const updated = students.map(student => ({
+                name: student.name,
+                marks: Math.min(student.marks + 5, 100)
+            }));
+
+            // Select passing students
+            const passed = updated.filter(student => student.marks >= 40);
+
+            // Calculate average marks
+            const total = passed.reduce(
+                (sum, student) => sum + student.marks, 0
+            );
+            const average = total / passed.length;
+
+            // Display passing students
+            passed.forEach(student => {
+                document.write(student.name + ": " + student.marks + "<br>");
+            });
+
+            // IIFE to display final report
+            (function() {
+                document.write("<br>Average Marks: " + average.toFixed(2));
+                document.write("<br>Total Passing Students: " + passed.length);
+            })();
+        }
+
+        studentReport(students);
+    </script>
+</body>
+</html>

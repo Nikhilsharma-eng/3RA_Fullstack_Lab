@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List</title>
+  <style>
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      background: #eee;
+      font-family: Arial, sans-serif;
+    }
+
+    .app {
+      width: 420px;
+      max-width: 90vw;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
+
+    h2 { text-align: center; }
+
+    .input {
+      display: flex;
+      gap: 8px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      margin-top: 8px;
+      background: #f5f5f5;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h2>My To-Do List</h2>
+    <div class="input">
+      <input id="taskInput" type="text" placeholder="Enter a task">
+      <button id="addBtn">Add</button>
+    </div>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const input = document.getElementById("taskInput");
+    const list = document.getElementById("taskList");
+
+    function addTask() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <input type="checkbox">
+        <span class="text"></span>
+        <button class="up">↑</button>
+        <button class="down">↓</button>
+        <button class="delete">X</button>
+      `;
+
+      li.querySelector(".text").textContent = text;
+
+      li.querySelector("input").addEventListener("change", function () {
+        li.querySelector(".text").classList.toggle("done", this.checked);
+      });
+
+      li.querySelector(".up").addEventListener("click", function () {
+        if (li.previousElementSibling) {
+          list.insertBefore(li, li.previousElementSibling);
+        }
+      });
+
+      li.querySelector(".down").addEventListener("click", function () {
+        if (li.nextElementSibling) {
+          list.insertBefore(li.nextElementSibling, li);
+        }
+      });
+
+      li.querySelector(".delete").addEventListener("click", function () {
+        li.remove();
+      });
+
+      list.appendChild(li);
+      input.value = "";
+      input.focus();
+    }
+
+    document.getElementById("addBtn").addEventListener("click", addTask);
+
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") addTask();
+    });
+  </script>
+</body>
+</html>
